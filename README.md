@@ -35,11 +35,33 @@ _I'd love for you to make the most of this project - it's all about learning, he
 3. **Install Required Dependencies**
 
    ```bash
+	# installs fnm (Fast Node Manager)
+	winget install Schniz.fnm
+
+	# configure fnm environment
+	fnm env --use-on-cd | Out-String | Invoke-Expression
+
+	# download and install Node.js
+	fnm use --install-if-missing 20
+
+	# verifies the right Node.js version is in the environment
+	node -v # should print `v20.18.0`
+
+	# verifies the right npm version is in the environment
+	npm -v # should print `10.8.2`
    npm i
    ```
 
 4. **Set up your MongoDB Database**
-
+	sudo apt-get install gnupg curl
+	curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+   --dearmor
+	echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+	sudo apt-get update
+	sudo apt-get install -y mongodb-org
+	sudo systemctl start mongod
+	
    - Open MongoDB Compass and connect MongoDB locally at `mongodb://localhost:27017`.
 
 5. **Import sample data**
