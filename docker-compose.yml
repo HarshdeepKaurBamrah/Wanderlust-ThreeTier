@@ -2,6 +2,8 @@ version: "3.8"
 services:
   mongodb:
     container_name: mongo
+     volumes:
+      - ./backend/data:/data/db
     image: mongo:latest
     ports:
       - "27017:27017"
