@@ -22,7 +22,7 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend
-    image: wonderlust/backend:latest
+    image: wonderlust/frontend:latest
     env_file:
       - ./backend/.env.sample
     volumes:
