@@ -11,7 +11,7 @@ services:
   backend:
     container_name: backend
     build: ./backend
-    image: wanderlust/backend:latest
+    image: khushpardhi/backend:latest
     env_file:
       - ./backend/.env.sample
     ports:
@@ -22,7 +22,7 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend
-    image: wonderlust/frontend:latest
+    image: khushpardhi/frontend:latest
     env_file:
       - ./backend/.env.sample
     volumes:
