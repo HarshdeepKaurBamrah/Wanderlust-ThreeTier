@@ -20,7 +20,7 @@ node {
             steps {
                 script {
                     // Split the DOCKER_IMAGES parameter into a list of Docker images
-                    def dockerImages = params.DOCKER_IMAGES.split("\n")
+                    def dockerImages = params.DOCKER_IMAGES.split(',')
                     for (image in dockerImages) {
                         echo "Pulling Docker image: ${image}"
                         sh "docker pull ${image}"
