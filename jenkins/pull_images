@@ -1,0 +1,47 @@
+node {
+    def repoUrl = 'https://github.com/khushpardhi/wanderlust.git'
+    def branch = 'main'
+    
+    try {
+        stage('clone code') {
+            cleanWs()
+            git url: repoUrl, branch: branch
+        }
+
+        stage('login to DockerHub') {
+            withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPass', usernameVariable: 'dockerHubUser')]) {
+                sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
+            }
+        }
+
+        stage('pull from dockerhub') {
+            script {
+                def DOCKER_IMAGES = [
+                    "khushpardhi/backend:latest",
+                    "khushpardhi/frontend:latest"
+                ]
+                for (image in DOCKER_IMAGES) {
+                    echo "Pulling Docker image: ${image}"
+                    sh "docker pull ${image}"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            script {
+                def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
+                if (containersRunning) {
+                    echo "Containers are already running. Shutting them down and restarting..."
+                    sh "docker-compose down"
+                    sh "docker-compose up -d"
+                } else {
+                    echo "No containers are running. Starting the containers..."
+                    sh "docker-compose up -d"
+                }
+            }
+        }
+
+    } catch (Exception e) {
+        throw e 
+    }
+}
