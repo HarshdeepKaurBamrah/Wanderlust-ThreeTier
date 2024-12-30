@@ -45,8 +45,5 @@ stage('Deploy') {
     } catch (Exception e) {
         currentBuild.result = 'FAILURE'
         throw e
-    } finally {
-        // Clean up workspace after job
-        cleanWs()
-    }
+    } 
 }
