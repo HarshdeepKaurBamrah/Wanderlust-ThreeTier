@@ -1,29 +1,21 @@
-pipeline {
-    agent any
-
+node {
     parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
-        string(name: 'DOCKER_IMAGES', defaultValue: 'khushpardhi/backend:latest,khushpardhi/frontend:latest', description: 'List of Docker images to pull')
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'git is my variable name and git hub is my value')
+        string(name: 'DOCKER_IMAGES', defaultValue: 'khushpardhi/backend:latest,khushpardhi/frontend:latest', description: 'gthis is the backend image')
     }
-
-    stages {
-        stage('Clone code') {
-            steps {
-                cleanWs()  // Clean workspace before starting the job
-                // Clone the Git repository
-                git url: "https://github.com/khushpardhi/wanderlust.git", branch: "${params.BRANCH_NAME}"
-            }
+    try {
+        stage('clone code') {
+            cleanWs()  // Clean workspace before starting the job
+            // Clone the Git repository
+            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "${params.BRANCH_NAME}"
         }
 
-        stage('Login to DockerHub') {
-            steps {
-                // Login to DockerHub using stored credentials
-                withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                }
+        stage('login to DockerHub') {
+            // Login to DockerHub using stored credentials
+            withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
             }
         }
-
         stage('Pull Docker Images') {
             steps {
                 script {
@@ -36,28 +28,21 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
-                    if (containersRunning) {
-                        echo "Containers are already running. Shutting them down and restarting..."
-                        sh "docker-compose down"
-                        sh "docker-compose up -d"
-                    } else {
-                        echo "No containers are running. Starting the containers..."
-                        sh "docker-compose up -d"
-                    }
+stage('Deploy') {
+            script {
+                def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
+                if (containersRunning) {
+                    echo "Containers are already running. Shutting them down and restarting..."
+                    sh "docker-compose down"
+                    sh "docker-compose up -d"
+                } else {
+                    echo "No containers are running. Starting the containers..."
+                    sh "docker-compose up -d"
                 }
             }
         }
-    }
 
-    post {
-        // Handle any post-build actions like clean up or notifications
-        always {
-            echo 'Cleaning up...'
-        }
-    }
+    } catch (Exception e) {
+        throw e
+    } 
 }
