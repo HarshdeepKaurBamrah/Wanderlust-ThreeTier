@@ -15,18 +15,15 @@ node {
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
             }
         }
-
-        stage('pull from dockerhub') {
-            script {
-                // Docker image names to pull
-                def DOCKER_IMAGES = [
-                    "khushpardhi/backend:latest",  
-                    "khushpardhi/frontend:latest"
-                ]
-                // Loop through images and pull each one
-                for (image in DOCKER_IMAGES) {
-                    echo "Pulling Docker image: ${image}"
-                    sh "docker pull ${image}"
+        stage('Pull Docker Images') {
+            steps {
+                script {
+                    // Split the DOCKER_IMAGES parameter into a list of Docker images
+                    def dockerImages = params.DOCKER_IMAGES.split("\n")
+                    for (image in dockerImages) {
+                        echo "Pulling Docker image: ${image}"
+                        sh "docker pull ${image}"
+                    }
                 }
             }
         }
