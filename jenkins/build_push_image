@@ -1,9 +1,12 @@
 node {
+    parameters {
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'git is my variable name and git hub is my value')
+    }
     try {
         stage('clone code') {
             cleanWs()  // Clean workspace before starting the job
             // Clone the Git repository
-            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "main"
+            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "${params.BRANCH_NAME}"
         }
 
         stage('login to DockerHub') {
