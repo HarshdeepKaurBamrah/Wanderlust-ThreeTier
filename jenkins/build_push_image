@@ -1,0 +1,52 @@
+node {
+    try {
+        stage('clone code') {
+            cleanWs()  // Clean workspace before starting the job
+            // Clone the Git repository
+            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "main"
+        }
+
+        stage('login to DockerHub') {
+            // Login to DockerHub using stored credentials
+            withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+            }
+        }
+
+        stage('pull from dockerhub') {
+            script {
+                // Docker image names to pull
+                def DOCKER_IMAGES = [
+                    "khushpardhi/backend:latest",  
+                    "khushpardhi/frontend:latest"
+                ]
+                // Loop through images and pull each one
+                for (image in DOCKER_IMAGES) {
+                    echo "Pulling Docker image: ${image}"
+                    sh "docker pull ${image}"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            script {
+                // Check if containers from the Docker Compose project are running
+                def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
+                if (containersRunning) {
+                    echo "Containers are already running. Stopping and restarting..."
+                    sh "docker-compose down"
+                    sh "docker-compose up -d"
+                } else {
+                    echo "No containers are running. Starting the containers..."
+                    sh "docker-compose up -d"
+                }
+            }
+        }
+    } catch (Exception e) {
+        currentBuild.result = 'FAILURE'
+        throw e
+    } finally {
+        // Clean up workspace after job
+        cleanWs()
+    }
+}
