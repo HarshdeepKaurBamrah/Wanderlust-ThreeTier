@@ -1,7 +1,7 @@
 node {
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'git is my variable name and git hub is my value')
-        run(name: 'DOCKER_IMAGES', defaultValue: 'khushpardhi/backend:latest\nkhushpardhi/frontend:latest', description: 'gthis is the backend image')
+        string(name: 'DOCKER_IMAGES', defaultValue: 'khushpardhi/backend:latest\nkhushpardhi/frontend:latest', description: 'gthis is the backend image')
     }
     try {
         stage('clone code') {
