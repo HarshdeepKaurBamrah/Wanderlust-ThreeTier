@@ -24,12 +24,11 @@ node {
                 script {
                     def userInput = input(
                         id: 'userInput', 
-                        message: 'Do you want to proceed with deployment?', 
+                        message: 'Do you want to proceed with push on dockerhub', 
                         parameters: [
                             choice(name: 'push image on dockerhub', choices: ['Yes', 'No'], description: 'can i pull this image on dockerhub')
                         ]
                     )
-                    echo "User chose: ${userInput}"
                 }
             }
         }
