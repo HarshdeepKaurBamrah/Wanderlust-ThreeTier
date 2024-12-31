@@ -1,8 +1,7 @@
 node {
     parameters {
         string(name: 'Imagetag', defaultValue: '1.0', description: 'this is imagetag')
-    }
-
+}
     try {
         stage("Clone Code") {
             cleanWs()
@@ -15,7 +14,7 @@ node {
             }
         }
 
-        stage("Build Docker Images with Docker Compose") {
+         stage("Build Docker Images with Docker Compose") {
             echo "Building Docker images using docker-compose..."
             // Use the image tag parameter in the docker-compose build step
             sh "docker-compose build --build-arg IMAGE_TAG=${params.Imagetag}"
@@ -31,44 +30,14 @@ node {
                 sh "docker push ${image}"
             }
         }
-
-        stage('User Input - Deploy Job') {
-            steps {
-                script {
-                    def userInput = input(
-                        message: 'Do you want to deploy this build?',
-                        parameters: [
-                            choice(name: 'Deploy', choices: ['Yes', 'No'], description: 'Do you want to deploy to the environment?')
+      stage('Approval') {
+             input(
+                message: 'Do you want to proceed with push on dockerhub', 
+                parameters: [
+                choice(name: 'Deploy', choices: ['Yes', 'No'], description: 'Do you want to deploy to the environment?')
                         ]
                     )
-
-                    if (userInput == 'Yes') {
-                        echo "User approved deployment. Triggering Deploy job."
-                        build job: 'deploy_app', 
-                            parameters: [
-                                string(name: 'Imagetag', value: "${params.Imagetag}")
-                            ]
-                    } else {
-                        echo "User declined deployment. Skipping deploy step."
-                    }
-                }
-            }
-        }
-
-        stage('Deploy') {
-            script {
-                def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
-                if (containersRunning) {
-                    echo "Containers are already running. Shutting them down and restarting..."
-                    sh "docker-compose down"
-                    sh "docker-compose up -d"
-                } else {
-                    echo "No containers are running. Starting the containers..."
-                    sh "docker-compose up -d"
-                }
-            }
-        }
-
+                }  
     } catch (Exception e) {
         currentBuild.result = "FAILURE"
         throw e
