@@ -67,7 +67,7 @@ node {
             }
         }
 
-    } catch (Exception e) {
+     catch (Exception e) {
         currentBuild.result = "FAILURE"
         throw e
     }
