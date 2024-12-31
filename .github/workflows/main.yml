@@ -21,3 +21,7 @@ jobs:
         with:
           username: khushpardhi
           password: KHush##@@123
+
+      - name: Build Docker images with Docker Compose
+        run: 
+          docker-compose -f docker-compose.yml build
