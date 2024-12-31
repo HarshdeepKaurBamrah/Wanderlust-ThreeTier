@@ -4,6 +4,7 @@ node {
         string(name: 'giturl', defaultValue: 'https://github.com/khushpardhi/wanderlust.git', description: 'cloning the code from github')
         string(name: 'DOCKERHUB_USERNAME', defaultValue: 'khushpardhi', description: 'username of dockerhub')
         string(name: 'DOCKERHUB_PASSWORD', defaultValue: 'KHush##@@123', description: 'this is dockerhub password')
+        string(name: 'FRONTEND_IMAGE', defaultValue: 'khushpardhi/frontend:latest', description: 'this is the frontend image')
 }
     try {
         stage("Clone Code") {
@@ -25,7 +26,7 @@ node {
         stage("Push Docker Images to DockerHub") {
             def DOCKER_IMAGES = [
                 "khushpardhi/backend:latest",
-                "khushpardhi/frontend:latest"
+                "${params.FRONTEND_IMAGE}"
             ]
             for (image in DOCKER_IMAGES) {
                 echo "Pushing Docker image: ${image}"
