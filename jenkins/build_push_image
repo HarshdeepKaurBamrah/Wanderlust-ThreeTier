@@ -1,7 +1,6 @@
 node {
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
-        string(name: 'DOCKER_IMAGES', defaultValue: 'khushpardhi/backend:latest,khushpardhi/frontend:latest', description: 'List of Docker images to pull')
     }
     try {
         stage('clone code') {
@@ -16,15 +15,15 @@ node {
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
             }
         }
-        stage('Pull Docker Images') {
-            steps {
-                script {
-                    // Split the DOCKER_IMAGES parameter into a list of Docker images
-                    def dockerImages = params.DOCKER_IMAGES.split(',')
-                    for (image in dockerImages) {
-                        echo "Pulling Docker image: ${image}"
-                        sh "docker pull ${image}"
-                    }
+                stage('pull from dockerhub') {
+            script {
+                def DOCKER_IMAGES = [
+                    "khushpardhi/backend:latest",
+                    "khushpardhi/frontend:latest"
+                ]
+                for (image in DOCKER_IMAGES) {
+                    echo "Pulling Docker image: ${image}"
+                    sh "docker pull ${image}"
                 }
             }
         }
