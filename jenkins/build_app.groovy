@@ -1,7 +1,8 @@
 node {
     parameters {
         string(name: 'Imagetag', defaultValue: '1.0', description: 'this is imagetag')
-}
+    }
+
     try {
         stage("Clone Code") {
             cleanWs()
@@ -14,7 +15,7 @@ node {
             }
         }
 
-         stage("Build Docker Images with Docker Compose") {
+        stage("Build Docker Images with Docker Compose") {
             echo "Building Docker images using docker-compose..."
             // Use the image tag parameter in the docker-compose build step
             sh "docker-compose build --build-arg IMAGE_TAG=${params.Imagetag}"
@@ -30,6 +31,7 @@ node {
                 sh "docker push ${image}"
             }
         }
+
         stage('User Input - Deploy Job') {
             steps {
                 script {
@@ -44,16 +46,16 @@ node {
                         echo "User approved deployment. Triggering Deploy job."
                         build job: 'deploy_app', 
                             parameters: [
-                            string(name: 'Imagetag', value: "${params.Imagetag}")
-                        ]
+                                string(name: 'Imagetag', value: "${params.Imagetag}")
+                            ]
                     } else {
                         echo "User declined deployment. Skipping deploy step."
                     }
                 }
             }
         }
-    }
-    tage('Deploy') {
+
+        stage('Deploy') {
             script {
                 def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
                 if (containersRunning) {
@@ -67,7 +69,7 @@ node {
             }
         }
 
-     catch (Exception e) {
+    } catch (Exception e) {
         currentBuild.result = "FAILURE"
         throw e
     }
