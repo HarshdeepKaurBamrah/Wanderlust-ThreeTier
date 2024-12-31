@@ -5,6 +5,7 @@ node {
         string(name: 'DOCKERHUB_USERNAME', defaultValue: 'khushpardhi', description: 'username of dockerhub')
         string(name: 'DOCKERHUB_PASSWORD', defaultValue: 'KHush##@@123', description: 'this is dockerhub password')
         string(name: 'FRONTEND_IMAGE', defaultValue: 'khushpardhi/frontend:latest', description: 'this is the frontend image')
+        string(name: 'BACKEND_IMAGE', defaultValue: 'khushpardhi/backend:latest', description: 'this is the backend image')
 }
     try {
         stage("Clone Code") {
@@ -25,7 +26,7 @@ node {
 
         stage("Push Docker Images to DockerHub") {
             def DOCKER_IMAGES = [
-                "khushpardhi/backend:latest",
+                "${params.BACKEND_IMAGE}"
                 "${params.FRONTEND_IMAGE}"
             ]
             for (image in DOCKER_IMAGES) {
