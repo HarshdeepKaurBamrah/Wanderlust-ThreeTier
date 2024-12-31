@@ -19,14 +19,6 @@ node {
             // Use the image tag parameter in the docker-compose build step
             sh "docker-compose build --build-arg IMAGE_TAG=${params.Imagetag}"
         }
-        stage('Approval') {
-             input(
-                message: 'Do you want to proceed with push on dockerhub', 
-                parameters: [
-                choice(name: 'push image on dockerhub', choices: ['Yes', 'No'], description: 'can i push this image on dockerhub')
-                        ]
-                    )
-                }
 
         stage("Push Docker Images to DockerHub") {
             def DOCKER_IMAGES = [
@@ -38,6 +30,30 @@ node {
                 sh "docker push ${image}"
             }
         }
+        stage('User Input - Deploy Job') {
+            steps {
+                script {
+                    def userInput = input(
+                        message: 'Do you want to deploy this build?',
+                        parameters: [
+                            choice(name: 'Deploy', choices: ['Yes', 'No'], description: 'Do you want to deploy to the environment?')
+                        ]
+                    )
+
+                    if (userInput == 'Yes') {
+                        echo "User approved deployment. Triggering Deploy job."
+                        build job: 'deploy_app', 
+                            parameters: [
+                            string(name: 'Imagetag', value: "${params.Imagetag}")
+                        ]
+                    } else {
+                        echo "User declined deployment. Skipping deploy step."
+                    }
+                }
+            }
+        }
+    }
+
     } catch (Exception e) {
         currentBuild.result = "FAILURE"
         throw e
