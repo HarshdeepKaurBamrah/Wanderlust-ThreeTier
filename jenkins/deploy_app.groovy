@@ -24,6 +24,14 @@ node {
                 sh "docker pull ${image}"
             }
         }
+           stage('Approval') {
+             input(
+                message: 'Do you want to Deploy', 
+                parameters: [
+                choice(name: 'deploy the project', choices: ['Yes', 'No'], description: 'can i deploy this project')
+                        ]
+                    )
+                }
        stage('Deploy') {
             script {
                 def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
