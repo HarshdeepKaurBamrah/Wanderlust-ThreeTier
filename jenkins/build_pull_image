@@ -6,7 +6,7 @@ node {
         stage('clone code') {
             cleanWs()  // Clean workspace before starting the job
             // Clone the Git repository
-            git url: "${params.giturl}", branch: "${params.BRANCH_NAME}"
+            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "main"
         }
 
         stage('login to DockerHub') {
