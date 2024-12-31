@@ -19,6 +19,20 @@ node {
             // Use the image tag parameter in the docker-compose build step
             sh "docker-compose build --build-arg IMAGE_TAG=${params.Imagetag}"
         }
+        stage('Approval') {
+            steps {
+                script {
+                    def userInput = input(
+                        id: 'userInput', 
+                        message: 'Do you want to proceed with deployment?', 
+                        parameters: [
+                            choice(name: 'push image on dockerhub', choices: ['Yes', 'No'], description: 'can i pull this image on dockerhub')
+                        ]
+                    )
+                    echo "User chose: ${userInput}"
+                }
+            }
+        }
 
         stage("Push Docker Images to DockerHub") {
             def DOCKER_IMAGES = [
