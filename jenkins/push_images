@@ -2,6 +2,8 @@ node {
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
         string(name: 'giturl', defaultValue: 'https://github.com/khushpardhi/wanderlust.git', description: 'cloning the code from github')
+        string(name: 'DOCKERHUB_USERNAME', defaultValue: 'khushpardhi', description: 'username of dockerhub')
+        string(name: 'DOCKERHUB_PASSWORD', defaultValue: 'KHush##@@123', description: 'this is dockerhub password')
 }
     try {
         stage("Clone Code") {
@@ -11,7 +13,7 @@ node {
 
         stage("Login to DockerHub") {
             withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker login -u ${params.DOCKERHUB_USERNAME} -p ${params.DOCKERHUB_PASSWORD}"
             }
         }
 
