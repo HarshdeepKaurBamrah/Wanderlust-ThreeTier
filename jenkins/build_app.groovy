@@ -53,6 +53,19 @@ node {
             }
         }
     }
+    tage('Deploy') {
+            script {
+                def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
+                if (containersRunning) {
+                    echo "Containers are already running. Shutting them down and restarting..."
+                    sh "docker-compose down"
+                    sh "docker-compose up -d"
+                } else {
+                    echo "No containers are running. Starting the containers..."
+                    sh "docker-compose up -d"
+                }
+            }
+        }
 
     } catch (Exception e) {
         currentBuild.result = "FAILURE"
