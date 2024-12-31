@@ -1,12 +1,13 @@
 node {
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
+        string(name: 'giturl', defaultValue: 'https://github.com/khushpardhi/wanderlust.git', description: 'cloning the code from github')
     }
     try {
         stage('clone code') {
             cleanWs()  // Clean workspace before starting the job
             // Clone the Git repository
-            git url: "https://github.com/khushpardhi/wanderlust.git", branch: "${params.BRANCH_NAME}"
+            git url: "${params.giturl}", branch: "${params.BRANCH_NAME}"
         }
 
         stage('login to DockerHub') {
