@@ -1,4 +1,4 @@
-node 
+node {
     parameters {
         string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
         string(name: 'giturl', defaultValue: 'https://github.com/khushpardhi/wanderlust.git', description: 'cloning the code from github')
