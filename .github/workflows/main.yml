@@ -18,8 +18,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: khushpardhi
-          password: KHush##@@123
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Install Docker Compose
         run: |
