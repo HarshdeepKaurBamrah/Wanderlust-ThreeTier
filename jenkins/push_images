@@ -26,7 +26,7 @@ node {
 
         stage("Push Docker Images to DockerHub") {
             def DOCKER_IMAGES = [
-                "${params.BACKEND_IMAGE}"
+                "${params.BACKEND_IMAGE}",
                 "${params.FRONTEND_IMAGE}"
             ]
             for (image in DOCKER_IMAGES) {
