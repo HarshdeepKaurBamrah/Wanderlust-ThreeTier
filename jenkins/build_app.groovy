@@ -37,6 +37,12 @@ node {
                 choice(name: 'Deploy', choices: ['Yes', 'No'], description: 'Do you want to deploy to the environment?')
                         ]       
             )
+              if (userInput == 'Yes') {
+                        build job: 'Deploy_Job', 
+                            parameters: [
+                                string(name: 'Imagetag', value: "${params.Imagetag}")
+                            ]
+                    } 
           
                 }  
     } catch (Exception e) {
