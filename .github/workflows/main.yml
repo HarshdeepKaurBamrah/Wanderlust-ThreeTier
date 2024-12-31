@@ -23,5 +23,5 @@ jobs:
           password: KHush##@@123
 
       - name: Build Docker images with Docker Compose
-        run: 
+        run:|
           docker-compose -f docker-compose.yml build
