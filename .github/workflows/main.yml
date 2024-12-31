@@ -30,13 +30,13 @@ jobs:
         run: |
           docker-compose build
 
-       - name: Push Docker Images to DockerHub
+      - name: Push Docker Images to DockerHub
         run: |
-          IMAGES=(\n
-            \"khushpardhi/backend:Imagetag\"\n
-            \"khushpardhi/frontend:Imagetag\"\n
-          )\n
-          for IMAGE in \"${IMAGES[@]}\"; do\n
-            echo \"Tagging and pushing image: $IMAGE\"\n
-            docker push \"$IMAGE\"\n
+          IMAGES=(
+            "khushpardhi/backend:Imagetag"
+            "khushpardhi/frontend:Imagetag"
+          )
+          for IMAGE in "${IMAGES[@]}"; do
+            echo "Tagging and pushing image: $IMAGE"
+            docker push "$IMAGE"
           done
