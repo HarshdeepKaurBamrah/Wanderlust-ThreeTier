@@ -1,11 +1,6 @@
 node {
     parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch to pull')
-        string(name: 'giturl', defaultValue: 'https://github.com/khushpardhi/wanderlust.git', description: 'cloning the code from github')
-        string(name: 'DOCKERHUB_USERNAME', defaultValue: 'khushpardhi', description: 'username of dockerhub')
-        string(name: 'DOCKERHUB_PASSWORD', defaultValue: 'KHush##@@123', description: 'this is dockerhub password')
-        string(name: 'FRONTEND_IMAGE', defaultValue: 'khushpardhi/frontend:latest', description: 'this is the frontend image')
-        string(name: 'BACKEND_IMAGE', defaultValue: 'khushpardhi/backend:latest', description: 'this is the backend image')
+        string(name: 'Imagetag', defaultValue: '1.0', description: 'this is imagetag')
     }
     try {
         stage('clone code') {
@@ -20,16 +15,14 @@ node {
                 sh "docker login -u ${params.DOCKERHUB_USERNAME} -p ${params.DOCKERHUB_PASSWORD}"
             }
         }
-                stage('pull from dockerhub') {
-            script {
-                def DOCKER_IMAGES = [
-                     "${params.BACKEND_IMAGE}",
-                     "${params.FRONTEND_IMAGE}"
-                ]
-                for (image in DOCKER_IMAGES) {
-                    echo "Pulling Docker image: ${image}"
-                    sh "docker pull ${image}"
-                }
+        stage("Pull Docker Images to DockerHub") {
+            def DOCKER_IMAGES = [
+                "khushpardhi/backend:${params.Imagetag}",
+                "khushpardhi/frontend:${params.Imagetag}"
+            ]
+            for (image in DOCKER_IMAGES) {
+                echo "Pushing Docker image: ${image}"
+                sh "docker pull ${image}"
             }
         }
 stage('Deploy') {
