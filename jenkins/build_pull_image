@@ -9,10 +9,9 @@ node {
             git url: "https://github.com/khushpardhi/wanderlust.git", branch: "main"
         }
 
-        stage('login to DockerHub') {
-            // Login to DockerHub using stored credentials
+      stage("Login to DockerHub") {
             withCredentials([usernamePassword(credentialsId: "dockerHub", passwordVariable: "dockerHubPass", usernameVariable: "dockerHubUser")]) {
-                sh "docker login -u ${params.DOCKERHUB_USERNAME} -p ${params.DOCKERHUB_PASSWORD}"
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
             }
         }
         stage("Pull Docker Images to DockerHub") {
@@ -25,7 +24,7 @@ node {
                 sh "docker pull ${image}"
             }
         }
-stage('Deploy') {
+       stage('Deploy') {
             script {
                 def containersRunning = sh(script: "docker ps -q --filter 'label=com.docker.compose.project=wanderlust'", returnStdout: true).trim()
                 if (containersRunning) {
