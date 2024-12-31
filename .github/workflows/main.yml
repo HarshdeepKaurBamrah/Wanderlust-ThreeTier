@@ -1,4 +1,3 @@
-
 name: CI/CD Pipeline
 
 on:
@@ -12,18 +11,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2  
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: khushpardhi
           password: KHush##@@123
-    steps:
+
       - name: Build Docker Images with Docker Compose
         run: |
           docker-compose build
-
-
