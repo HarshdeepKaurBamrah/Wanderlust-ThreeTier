@@ -21,5 +21,13 @@ jobs:
         with:
           username: khushpardhi
           password: KHush##@@123
+       - name: Build Docker Images with Docker Compose
+        run: |
+          docker-compose build --build-arg IMAGE_TAG=${{ github.event.inputs.imagetag }}
+
+  push-docker-images:
+    runs-on: ubuntu-latest
+    needs: build-docker-images
+        
 
 
