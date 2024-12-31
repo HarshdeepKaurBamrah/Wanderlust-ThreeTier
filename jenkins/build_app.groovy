@@ -38,7 +38,7 @@ node {
                         ]       
             )
               if (userInput == 'Yes') {
-                        build job: 'Deploy_Job', 
+                        build job: 'deploy_app', 
                             parameters: [
                                 string(name: 'Imagetag', value: "${params.Imagetag}")
                             ]
