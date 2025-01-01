@@ -36,7 +36,8 @@ jobs:
             echo "Tagging and pushing image: $IMAGE"
             docker pull "$IMAGE"
           done
-
+deploy:
+    runs-on: ubuntu-latest
       - name: Deploy to Server (example step)
         run: |
            docker-compose up -d
