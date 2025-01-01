@@ -64,5 +64,5 @@ jobs:
             echo "Deploying Docker images"
             docker pull khushpardhi/backend:Imagetag
             docker pull khushpardhi/frontend:Imagetag
-            docker-compose -f ./docker-compose.yml down 
-            docker-compose -f ./docker-compose.yml up -d
+            docker-compose -f docker-compose.yml down 
+            docker-compose -f docker-compose.yml up -d
