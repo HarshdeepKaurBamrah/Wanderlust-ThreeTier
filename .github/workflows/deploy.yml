@@ -36,3 +36,7 @@ jobs:
             echo "Tagging and pushing image: $IMAGE"
             docker pull "$IMAGE"
           done
+
+      - name: Deploy to Server (example step)
+        run: |
+           docker-compose -f docker-compose.yml up -d
