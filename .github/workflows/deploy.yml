@@ -61,7 +61,7 @@ jobs:
             docker pull khushpardhi/frontend:Imagetag
             
             # Restart or start services using Docker Compose (modify path as needed)
-            cd /path/to/your/docker-compose/project
+            cd /docker-compose.yml
             docker-compose down
             docker-compose up -d
           EOF
