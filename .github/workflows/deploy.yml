@@ -52,17 +52,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Deploy Docker Images to Server (SSH Example)
-        run: |
-          echo "Deploying Docker images to remote server"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            # Pull the latest images from DockerHub
-            docker pull khushpardhi/backend:Imagetag
-            docker pull khushpardhi/frontend:Imagetag
-            
-            # Restart or start services using Docker Compose (modify path as needed)
-            cd /docker-compose.yml
-            docker-compose down
-            docker-compose up -d
-          EOF
+    - name: Deploy using SSH
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+         host: ${{ secrets.SERVER_IP }}
+         username: ${{ secrets.SSH_USER }}
+         key: ${{ secrets.SSH_PRIVATE_KEY }}
+         port: 22
+         script: |
+           echo "Deploying Docker images"
+           docker pull khushpardhi/backend:Imagetag
+           docker pull khushpardhi/frontend:Imagetag
+           cd /docker-compose.yml
+           docker-compose down
+           docker-compose up -d
+
           
