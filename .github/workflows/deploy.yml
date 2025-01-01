@@ -38,6 +38,7 @@ jobs:
           done
 deploy:
     runs-on: ubuntu-latest
+     steps:
       - name: Deploy to Server (example step)
         run: |
            docker-compose up -d
