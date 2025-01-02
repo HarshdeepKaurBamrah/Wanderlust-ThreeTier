@@ -4,10 +4,17 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      image_version:
+        description: 'Version for the Docker images'
+        required: true
+        default: 'latest'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2  
@@ -32,10 +39,14 @@ jobs:
 
       - name: Push Docker Images to DockerHub
         run: |
+          # Use the image version input from the workflow_dispatch
+          IMAGE_VERSION=${{ github.event.inputs.image_version }}
+
           IMAGES=(
-            "khushpardhi/backend:Imagetag"
-            "khushpardhi/frontend:Imagetag"
+            "khushpardhi/backend:${IMAGE_VERSION}"
+            "khushpardhi/frontend:${IMAGE_VERSION}"
           )
+
           for IMAGE in "${IMAGES[@]}"; do
             echo "Tagging and pushing image: $IMAGE"
             docker push "$IMAGE"
