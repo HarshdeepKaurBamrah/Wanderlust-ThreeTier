@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -e
+
 echo "Updating the system..."
 apt-get update -y
 
@@ -17,13 +18,15 @@ apt install -y ansible
 echo "Verifying Ansible installation..."
 ansible --version
 
-cd tmp
+mkdir -p /workspace/repo
+
+cd /workspace/repo
 
 echo "Cloning the repository..."
 git clone https://github.com/khushpardhi/wanderlust.git
 
-cat tmp
+cat /workspace/repo
 
-cd wanderlust/ansible
+cd /workspace/repo/wanderlust/ansible
 
 ansible-playbook main.yml
