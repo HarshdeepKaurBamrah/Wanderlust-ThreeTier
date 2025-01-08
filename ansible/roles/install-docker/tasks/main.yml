@@ -23,11 +23,11 @@
     # become: true
 
 
-- name: Install docker
-  apt:
-    name: docker
-    state: present
-  # become: true
+# - name: Install docker
+#   apt:
+#     name: docker
+#     state: present
+#   # become: true
 
 - name: Ensure Docker service is running
   service:
