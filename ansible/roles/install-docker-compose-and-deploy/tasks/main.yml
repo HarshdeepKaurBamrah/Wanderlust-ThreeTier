@@ -14,10 +14,10 @@
 - name: Stop services using Docker Compose
   command: 
     cmd: docker-compose down
-    chdir: /home/ncs/khush/wanderlust
+    chdir: /home/ubuntu/wanderlust
      # become: true
 
 - name: Start services using Docker Compose
   command: 
     cmd: docker-compose up -d
-    chdir: /home/ncs/khush/wanderlust
+    chdir: /home/ubuntu/wanderlust
