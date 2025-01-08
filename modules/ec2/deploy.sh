@@ -22,6 +22,6 @@ apt install -y ansible
 echo "Verifying Ansible installation..."
 ansible --version
 
-cd /home/ubuntu/wanderlust/ansible
+cd /home/ubuntu/wanderlust/ansible/
 
 ansible-playbook main.yml
