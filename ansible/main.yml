@@ -3,5 +3,5 @@
   become: yes 
   roles:
     - install-git-and-clone
-    - install-docker/tasks
+    - install-docker
     - install-docker-compose-and-deploy
