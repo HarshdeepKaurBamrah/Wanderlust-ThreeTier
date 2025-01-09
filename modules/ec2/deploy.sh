@@ -25,7 +25,9 @@ cd /workspace/repo
 echo "Cloning the repository..."
 git clone https://github.com/khushpardhi/wanderlust.git
 
-cat /workspace/repo
+# cat /workspace/repo
+ls /workspace/repo
+
 
 cd /workspace/repo/wanderlust/ansible
 
