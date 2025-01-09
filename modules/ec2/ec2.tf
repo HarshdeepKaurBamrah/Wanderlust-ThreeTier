@@ -6,7 +6,7 @@ resource "aws_instance" "my_ec2" {
   vpc_security_group_ids = [
     var.ec2_sg_id
   ]
-  user_data = file("/modules/ec2/deploy.sh")
+  user_data = file("/ec2/deploy.sh")
   # # User Data for deployment
   # user_data = <<-EOF
               # #!/bin/bash
