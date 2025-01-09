@@ -32,7 +32,6 @@ jobs:
         
       - name: Terraform plan
         run: |
-         terraform plan
          cd terraform_directory
 
       - name: Terraform Apply
