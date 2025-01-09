@@ -31,7 +31,9 @@ jobs:
       #   run: terraform init
         
       - name: Terraform plan
-        run: terraform plan
+        run: |
+         terraform plan
+         cd terraform_directory
 
       - name: Terraform Apply
         run: terraform apply
