@@ -34,12 +34,6 @@ jobs:
          terraform init
          
         
-      # - name: list of directry
-      #   run: ls
-        
-      # - name: Terraform Init
-      #   run: terraform init
-        
       - name: Terraform plan
         run: |
          cd stack 
