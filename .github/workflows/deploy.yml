@@ -47,7 +47,10 @@ jobs:
          terraform plan
 
       - name: Terraform Apply
-        run: terraform apply
+        run: |
+         cd stack 
+         ls -alh 
+         terraform apply
   
       
       
