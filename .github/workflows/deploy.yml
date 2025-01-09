@@ -64,3 +64,5 @@ jobs:
             docker pull khushpardhi/frontend:Imagetag
             docker-compose -f docker-compose.yml down 
             docker-compose -f docker-compose.yml up -d
+
+
