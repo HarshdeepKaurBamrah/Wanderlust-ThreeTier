@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -24,7 +21,10 @@ jobs:
         run: ls
       
       - name: Change directory to Terraform directory
-        run: cd stack
+        run: cd stack  
+        
+      - name: list of directry
+        run: ls
         
       - name: Terraform Init
         run: terraform init
