@@ -21,7 +21,7 @@ jobs:
         run: terraform init
         
       - name: Change directory to Terraform directory
-        run: stack
+        run: cd stack
         
       - name: Terraform Plan
         run: terraform plan
