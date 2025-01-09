@@ -18,10 +18,13 @@ jobs:
           terraform_version: v1.10.3  
       
       - name: Change directory to Terraform directory
-        run: cd stack  
+        run: |
+         cd stack 
+         ls -alh 
+         
         
-      - name: list of directry
-        run: ls
+      # - name: list of directry
+      #   run: ls
         
       - name: Terraform Init
         run: terraform init
