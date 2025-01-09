@@ -18,14 +18,13 @@ jobs:
           terraform_version: 1.4.0  
       
       - name: Change directory to Terraform directory
-        run: cd stack
+        run: cd stack/
         
       - name: Terraform Init
         run: terraform init
         
       - name: Change directory to Terraform directory
-        run: |
-         terraform plan
+        run: terraform plan
 
       - name: Terraform Apply
         run: terraform apply
