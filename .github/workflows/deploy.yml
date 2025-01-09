@@ -29,7 +29,7 @@ jobs:
       
       - name: Change directory to Terraform directory
         run: |
-         cd stack 
+         cd stack
          ls -alh 
          terraform init
          
