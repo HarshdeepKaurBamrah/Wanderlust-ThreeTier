@@ -16,6 +16,9 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: v1.10.3  
+
+      - name: Change directory to Terraform directory
+        run: ls
       
       - name: Change directory to Terraform directory
         run: cd stack
@@ -23,7 +26,7 @@ jobs:
       - name: Terraform Init
         run: terraform init
         
-      - name: Change directory to Terraform directory
+      - name: Terraform plan
         run: terraform plan
 
       - name: Terraform Apply
