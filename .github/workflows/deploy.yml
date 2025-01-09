@@ -17,7 +17,7 @@ jobs:
         with:
           terraform_version: v1.10.3  
 
-      - name: Change directory to Terraform directory
+      - name: list of directry
         run: ls
       
       - name: Change directory to Terraform directory
