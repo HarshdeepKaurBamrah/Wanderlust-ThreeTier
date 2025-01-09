@@ -18,7 +18,7 @@ jobs:
           terraform_version: 1.4.0  
       
       - name: Change directory to Terraform directory
-        run: cd stack
+        run: cd /wanderlust/stack
         
       - name: Terraform Init
         run: terraform init
