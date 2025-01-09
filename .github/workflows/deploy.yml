@@ -1,68 +1,87 @@
-# name: CI/CD Pipeline
+name: CI/CD Pipeline
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  
 
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.0  
 
-#       - name: Login to DockerHub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKERHUB_USER }}
-#           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Terraform Init
+        run: terraform init
+        
+      - name: Change directory to Terraform directory
+        run: stack
+        
+      - name: Terraform Plan
+        run: terraform plan
 
-#       - name: Install Docker Compose
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -y docker-compose
+      - name: Terraform Apply
+        run: terraform apply
+      
+      
 
-#       - name: Pull Docker Images to DockerHub
-#         run: |
-#           IMAGES=(
-#             "khushpardhi/backend:Imagetag"
-#             "khushpardhi/frontend:Imagetag"
-#           )
-#           for IMAGE in "${IMAGES[@]}"; do
-#             echo "Tagging and pushing image: $IMAGE"
-#             docker pull "$IMAGE"
-#           done
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-#   deploy:
-#     runs-on: ubuntu-latest
-#     needs: build  # Ensures this runs after the build job
-#     steps:
-#       - name: Checkout code again for deployment
-#         uses: actions/checkout@v2
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USER }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-#       - name: Login to DockerHub for deployment
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKERHUB_USER }}
-#           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+  #     - name: Install Docker Compose
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y docker-compose
 
-#       - name: Deploy to aws ec2
-#         uses: appleboy/ssh-action@v0.1.7
-#         with:
-#           host: ${{ secrets.SERVER_IP }}
-#           username: ${{ secrets.SSH_USER }}
-#           key: ${{ secrets.SSH_PRIVATE_KEY }}
-#           port: 22
-#           script: |
-#             cd wanderlust 
-#             echo "Deploying Docker images"
-#             docker pull khushpardhi/backend:Imagetag
-#             docker pull khushpardhi/frontend:Imagetag
-#             docker-compose -f docker-compose.yml down 
-#             docker-compose -f docker-compose.yml up -d
+  #     - name: Pull Docker Images to DockerHub
+  #       run: |
+  #         IMAGES=(
+  #           "khushpardhi/backend:Imagetag"
+  #           "khushpardhi/frontend:Imagetag"
+  #         )
+  #         for IMAGE in "${IMAGES[@]}"; do
+  #           echo "Tagging and pushing image: $IMAGE"
+  #           docker pull "$IMAGE"
+  #         done
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build  # Ensures this runs after the build job
+  #   steps:
+  #     - name: Checkout code again for deployment
+  #       uses: actions/checkout@v2
+
+  #     - name: Login to DockerHub for deployment
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USER }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  #     - name: Deploy to aws ec2
+  #       uses: appleboy/ssh-action@v0.1.7
+  #       with:
+  #         host: ${{ secrets.SERVER_IP }}
+  #         username: ${{ secrets.SSH_USER }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         port: 22
+  #         script: |
+  #           cd wanderlust 
+  #           echo "Deploying Docker images"
+  #           docker pull khushpardhi/backend:Imagetag
+  #           docker pull khushpardhi/frontend:Imagetag
+  #           docker-compose -f docker-compose.yml down 
+  #           docker-compose -f docker-compose.yml up -d
 
 
