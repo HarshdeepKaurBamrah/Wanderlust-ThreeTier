@@ -1,0 +1,7 @@
+- name: Deploy application with Docker and Docker Compose
+  hosts: localhost
+  become: yes 
+  roles:
+    - install-git-and-clone
+    - install-docker
+    - install-docker-compose-and-deploy

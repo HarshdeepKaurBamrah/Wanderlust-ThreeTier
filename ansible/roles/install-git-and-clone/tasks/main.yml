@@ -1,0 +1,86 @@
+---
+ # tasks file for ansible
+- name: Install Git
+  apt:
+    name: git
+    state: present
+
+- name: Clone the Git repository
+  git:
+    repo: 'https://github.com/khushpardhi/wanderlust.git'  
+    dest: '/home/ubuntu/wanderlust'  
+    version: 'main' 
+
+# # tasks file for ansible
+# - name: Install Git
+#   apt:
+#     name: git
+#     state: present
+
+# - name: Clone the Git repository
+#   git:
+#     repo: 'https://github.com/khushpardhi/wanderlust.git'  
+#     dest: '/home/ubuntu/wanderlust'  
+#     version: 'main' 
+
+
+# - name: Install Docker dependencies
+#   apt:
+#     name:
+#       - apt-transport-https
+#       - ca-certificates
+#       - curl
+#       - software-properties-common
+#     state: present
+#     # update_cache: yes
+#       # become: true
+
+# - name: Add Docker GPG key
+#   apt_key:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     state: present
+#     # become: true
+
+# - name: Add Docker APT repository
+#   apt_repository:
+#     repo: 'deb https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable'
+#     state: present
+#     # become: true
+
+
+# - name: Install docker
+#   apt:
+#     name: docker
+#     state: present
+#   # become: true
+
+# - name: Ensure Docker service is running
+#   service:
+#     name: docker
+#     state: started
+#     enabled: yes
+#      # become: true
+
+# - name: Install Docker Compose
+#   get_url:
+#     url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+#     dest: /usr/local/bin/docker-compose
+#     mode: '0755'
+
+
+# - name: Ensure directory exists for Docker Compose
+#   file:
+#     path: /home/ncs/khush/wanderlust
+#     state: directory
+
+# - name: Stop services using Docker Compose
+#   command: 
+#     cmd: docker-compose down
+#     chdir: /home/ncs/khush/wanderlust
+#      # become: true
+
+# - name: Start services using Docker Compose
+#   command: 
+#     cmd: docker-compose up -d
+#     chdir: /home/ncs/khush/wanderlust
+     # become: true
